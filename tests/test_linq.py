@@ -28,6 +28,14 @@ class PyLINQTest(TestCase):
             .select(lambda it: (it["name"], it["size"])).items(),
             [("item3", 6), ("item1", 8)])
 
+    def test2_a(self):
+        """test 02: order_by test with default clause"""
+        pq = PyLINQ([d['class'] for d in data])
+        self.assertEqual(
+            pq.order_by().items(),
+            ['classA', 'classA', 'classB'])
+
+
     def test3(self):
         """test 03: count test with generator"""
         pq = PyLINQ(iter(data))
@@ -44,6 +52,14 @@ class PyLINQTest(TestCase):
         self.assertEqual(
             pq.distinct(lambda x: x["class"]).items(),
             ["classA", "classB"])
+
+    def test4_a(self):
+        """test 04: distinct test with default"""
+        pq = PyLINQ([d['class'] for d in data])
+        self.assertEqual(
+            pq.distinct().items(),
+            ["classA", "classB"])
+
 
     def test5(self):
         """test 05: any test"""
