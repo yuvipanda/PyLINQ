@@ -125,6 +125,18 @@ class PyLINQ(object):
             pass
         return ret
 
+    def take(self, count, clause=None):
+        """returns 'count' elements"""
+        if clause:
+            return self.where(clause).take(count)
+        return PyLINQ(islice(self.iteritems(), count))
+
+    def skip(self, count, clause=None):
+        """skips 'count' elements and returns the rest"""
+        if clause:
+            return self.where(clause).skip(count)
+        return PyLINQ(islice(self.iteritems(), count, None))
+
     def element_at(self, index):
         """returns the element at position 'index'""" 
         try:
