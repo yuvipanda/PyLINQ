@@ -19,6 +19,14 @@ class PyLINQTest(TestCase):
             [{"name": "item1", "size": 8},
              {"name": "item2", "size": 10}])
 
+    def test_where_not(self):
+        """test 01: except/select test"""
+        pq = PyLINQ(data)
+        self.assertEqual(
+                pq.where_not(lambda it: it["class"] == "classA")
+                .select(lambda it: {"name": it["name"], "size": it["size"]}).items(),
+                [{"name": "item3", "size": 6}])
+
     def test2(self):
         """test 02: order_by test"""
         pq = PyLINQ(data)
