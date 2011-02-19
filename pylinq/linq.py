@@ -28,6 +28,9 @@ def _check(clause):
     if not callable(clause):
         raise TypeError("clause argument must be callable.")
 
+def _identity(x):
+    return x
+
 class PyLINQ(object):
     def __init__(self, items):
         self.__items = iter(items)
@@ -56,10 +59,13 @@ class PyLINQ(object):
         _check(clause)
         return PyLINQ(imap(clause, self.iteritems()))
 
-    def order_by(self, clause, cmp=None, order='asc'):
+    def order_by(self, clause=None, cmp=None, order='asc'):
         """returns new collection ordered by the result of clause over
         each item in input collection"""
-        _check(clause)
+        if clause:
+            _check(clause)
+        else:
+            clause = _identity
         ls = sorted(self.iteritems(), key=clause, cmp=cmp, reverse=(order != 'asc'))
         return PyLINQ(ls)
 
@@ -70,10 +76,13 @@ class PyLINQ(object):
         _check(clause)
         return sum(1 for _ in ifilter(clause, self.iteritems()))
 
-    def distinct(self, clause):
+    def distinct(self, clause=None):
         """returns new collection mapped from input collection
         by clause, but avoiding duplicates"""
-        _check(clause)
+        if clause:
+            _check(clause)
+        else:
+            clause = _identity
         seen = set()
         def _isnew(item):
             try:
