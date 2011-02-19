@@ -228,10 +228,8 @@ class PyLINQTest(TestCase):
         """test 20: take test"""
         l = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
         self.assertEquals(PyLINQ(l).take(5).items(), [1, 2, 3, 4, 5])
-        self.assertEquals(PyLINQ(l).take(5, lambda x: x % 2 == 0).items(), [2, 4, 6, 8, 10])
 
     def test21(self):
         """test 21: skip test"""
         l = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
         self.assertEquals(PyLINQ(l).skip(5).items(), [6, 7, 8, 9, 10])
-        self.assertEquals(PyLINQ(l).skip(3, lambda x: x % 2 == 0).items(), [8, 10])
