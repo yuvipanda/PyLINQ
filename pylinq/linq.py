@@ -28,8 +28,11 @@ def _check(clause):
     if not callable(clause):
         raise TypeError("clause argument must be callable.")
 
-def _identity(x):
+def identity(x):
     return x
+
+def negate(clause):
+    return lambda x: not clause(x)
 
 class PyLINQ(object):
     def __init__(self, items):
@@ -53,6 +56,11 @@ class PyLINQ(object):
         _check(clause)
         return PyLINQ(ifilter(clause, self.iteritems()))
 
+    # can't call it except() because of the inbuilt except keyword
+    def where_not(self, clause):
+        """return all items in collection for which clause returns false"""
+        return self.where(negate(clause))
+
     def select(self, clause):
         """returns new collection resultant of application of clause
         over each item in input collection"""
@@ -65,7 +73,7 @@ class PyLINQ(object):
         if clause:
             _check(clause)
         else:
-            clause = _identity
+            clause = identity
         ls = sorted(self.iteritems(), key=clause, cmp=cmp, reverse=(order != 'asc'))
         return PyLINQ(ls)
 
@@ -82,7 +90,7 @@ class PyLINQ(object):
         if clause:
             _check(clause)
         else:
-            clause = _identity
+            clause = identity
         seen = set()
         def _isnew(item):
             try:
