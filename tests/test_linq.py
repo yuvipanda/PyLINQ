@@ -232,7 +232,7 @@ class PyLINQTest(TestCase):
         self.assertEqual(set((i["name"],i["age"]) for i in l5),
                          set([("andres", 27), ("mark", 30)]))
 
-    def test_take(self)
+    def test_take(self):
         """test 20: take test"""
         l = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
         self.assertEquals(PyLINQ(l).take(5).items(), [1, 2, 3, 4, 5])
